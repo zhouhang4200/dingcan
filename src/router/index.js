@@ -24,167 +24,21 @@ const router = new Router({
             component: resolve => void(require(['../components/HelloWorld'], resolve)),
         },
         {
-            name: "order",
+            name: "table",
             icon: "el-icon-goods",
-            path: '/v2/merchant/',
-            redirect: '/v2/merchant/game-leveling',
+            path: '/table/',
+            redirect: '/table/list',
             component: App,
             // canReuse: false,
-            meta: {title: '商家管理'},
+            meta: {title: '餐桌管理'},
             menu: true,
             children: [
                 {
-                    name: "gameLevelingOrderChannel",
+                    name: "list",
                     menu: true,
-                    path: "game-leveling/channel",
-                    meta: {title: '商家信息'},
-                    component: resolve => void (require(['../components/order/game-leveling/Channel'], resolve)),
-                },
-                {
-                    name: "gameLevelingOrderTaobao",
-                    menu: true,
-                    path: "game-leveling/taobao",
-                    meta: {title: '代练待发'},
-                    component: resolve => void (require(['../components/order/game-leveling/Taobao'], resolve)),
-                },
-                {
-                    name: "gameLevelingOrderBusinessmanComplain",
-                    menu: true,
-                    path: "game-leveling/businessman-complain",
-                    meta: {title: '订单投诉'},
-                    component: resolve => void (require(['../components/order/game-leveling/BusinessmanComplain'], resolve)),
-                }
-            ]
-        },
-        {
-            name: "order",
-            icon: "el-icon-goods",
-            path: '/v2/food/',
-            redirect: '/v2/food/game-leveling',
-            component: App,
-            // canReuse: false,
-            meta: {title: '美食管理'},
-            menu: true,
-            children: [
-                {
-                    name: "gameLevelingOrderChannel",
-                    menu: true,
-                    path: "game-leveling/channel",
-                    meta: {title: '商家信息'},
-                    component: resolve => void (require(['../components/order/game-leveling/Channel'], resolve)),
-                },
-                {
-                    name: "gameLevelingOrderTaobao",
-                    menu: true,
-                    path: "game-leveling/taobao",
-                    meta: {title: '代练待发'},
-                    component: resolve => void (require(['../components/order/game-leveling/Taobao'], resolve)),
-                },
-                {
-                    name: "gameLevelingOrderBusinessmanComplain",
-                    menu: true,
-                    path: "game-leveling/businessman-complain",
-                    meta: {title: '订单投诉'},
-                    component: resolve => void (require(['../components/order/game-leveling/BusinessmanComplain'], resolve)),
-                }
-            ]
-        },
-        {
-            name: "order",
-            icon: "el-icon-goods",
-            path: '/v2/tables/',
-            redirect: '/v2/tables/game-leveling',
-            component: App,
-            // canReuse: false,
-            meta: {title: '座位管理'},
-            menu: true,
-            children: [
-                {
-                    name: "gameLevelingOrderChannel",
-                    menu: true,
-                    path: "game-leveling/channel",
-                    meta: {title: '商家信息'},
-                    component: resolve => void (require(['../components/order/game-leveling/Channel'], resolve)),
-                },
-                {
-                    name: "gameLevelingOrderTaobao",
-                    menu: true,
-                    path: "game-leveling/taobao",
-                    meta: {title: '代练待发'},
-                    component: resolve => void (require(['../components/order/game-leveling/Taobao'], resolve)),
-                },
-                {
-                    name: "gameLevelingOrderBusinessmanComplain",
-                    menu: true,
-                    path: "game-leveling/businessman-complain",
-                    meta: {title: '订单投诉'},
-                    component: resolve => void (require(['../components/order/game-leveling/BusinessmanComplain'], resolve)),
-                }
-            ]
-        },
-        {
-            name: "order",
-            icon: "el-icon-goods",
-            path: '/v2/order/',
-            redirect: '/v2/order/game-leveling',
-            component: App,
-            // canReuse: false,
-            meta: {title: '订单管理'},
-            menu: true,
-            children: [
-                {
-                    name: "gameLevelingOrderChannel",
-                    menu: true,
-                    path: "game-leveling/channel",
-                    meta: {title: '商家信息'},
-                    component: resolve => void (require(['../components/order/game-leveling/Channel'], resolve)),
-                },
-                {
-                    name: "gameLevelingOrderTaobao",
-                    menu: true,
-                    path: "game-leveling/taobao",
-                    meta: {title: '代练待发'},
-                    component: resolve => void (require(['../components/order/game-leveling/Taobao'], resolve)),
-                },
-                {
-                    name: "gameLevelingOrderBusinessmanComplain",
-                    menu: true,
-                    path: "game-leveling/businessman-complain",
-                    meta: {title: '订单投诉'},
-                    component: resolve => void (require(['../components/order/game-leveling/BusinessmanComplain'], resolve)),
-                }
-            ]
-        },
-        {
-            name: "order",
-            icon: "el-icon-goods",
-            path: '/v2/pay/',
-            redirect: '/v2/pay/game-leveling',
-            component: App,
-            // canReuse: false,
-            meta: {title: '支付管理'},
-            menu: true,
-            children: [
-                {
-                    name: "gameLevelingOrderChannel",
-                    menu: true,
-                    path: "game-leveling/channel",
-                    meta: {title: '商家信息'},
-                    component: resolve => void (require(['../components/order/game-leveling/Channel'], resolve)),
-                },
-                {
-                    name: "gameLevelingOrderTaobao",
-                    menu: true,
-                    path: "game-leveling/taobao",
-                    meta: {title: '代练待发'},
-                    component: resolve => void (require(['../components/order/game-leveling/Taobao'], resolve)),
-                },
-                {
-                    name: "gameLevelingOrderBusinessmanComplain",
-                    menu: true,
-                    path: "game-leveling/businessman-complain",
-                    meta: {title: '订单投诉'},
-                    component: resolve => void (require(['../components/order/game-leveling/BusinessmanComplain'], resolve)),
+                    path: "list",
+                    meta: {title: '餐桌信息'},
+                    component: resolve => void (require(['../components/table/list'], resolve)),
                 }
             ]
         }
