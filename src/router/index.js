@@ -34,7 +34,7 @@ const router = new Router({
             menu: true,
             children: [
                 {
-                    name: "list",
+                    name: "tableList",
                     menu: true,
                     path: "list",
                     meta: {title: '餐桌信息'},
@@ -53,7 +53,7 @@ const router = new Router({
             menu: true,
             children: [
                 {
-                    name: "list",
+                    name: "dishList",
                     menu: true,
                     path: "pages",
                     meta: {title: '菜肴信息'},
@@ -75,14 +75,16 @@ router.beforeEach((to, from, next) => {
         next();
     } else {
         if (! sessionStorage.getItem('Authorization') || sessionStorage.getItem('Authorization') == null) {
-            next({path:'/login'});
-            // next();
+            // next({path:'/login'});
+            Vue.component('App', require('../components/Main.vue'));
+            next();
         } else  {
             Vue.component('App', require('../components/Main.vue'));
             next();
         }
     }
 });
+
 // 后置拦截器
 router.afterEach((to, from, next) => {
 

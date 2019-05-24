@@ -111,16 +111,16 @@
                     <el-input v-model.number="form.ingredients" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="预览图片" prop="preview">
-                    <!--<el-upload-->
-                            <!--class="avatar-uploader"-->
-                            <!--action="/v2/account/authentication-upload?name=preview"-->
-                            <!--:show-file-list="false"-->
-                            <!--accept="image/jpeg,image/jpg,image/png"-->
-                            <!--:on-success="handleAvatarSuccess"-->
-                            <!--:before-upload="beforeAvatarUpload">-->
-                        <!--<img v-if="imageUrl1" :src="imageUrl1" class="avatar">-->
-                        <!--<i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
-                    <!--</el-upload>-->
+                    <el-upload
+                            class="avatar-uploader"
+                            action="/api/annexinfo/upload/image"
+                            :show-file-list="false"
+                            accept="image/jpeg,image/jpg,image/png"
+                            :on-success="handleAvatarSuccess"
+                            :before-upload="beforeAvatarUpload">
+                        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
                     <el-input v-model="form.preview" autocomplete="off" type="hidden"></el-input>
                 </el-form-item>
                 <el-form-item label="价格" prop="price">
@@ -149,10 +149,7 @@
                 this.title='添加菜肴';
                 this.dialogFormVisible = true;
                 this.form={
-                    merchantId: '',
-                    hatchet_man_phone: '',
-                    hatchet_man_qq: '',
-                    content: ''
+                    merchantId: '1',
                 };
             },
             // 编辑按钮
@@ -286,6 +283,28 @@
             handleTableHeight() {
                 this.tableHeight = window.innerHeight - 318;
             },
+            // 图片上传成功将地址回传给表单
+            handleAvatarSuccess(res, file) {
+                if (res) {
+                    this.imageUrl = URL.createObjectURL(file.raw);
+                    this.form.preview = res.data;
+                }
+            },
+            // 图片上传
+            beforeAvatarUpload(file) {
+                const isJPEG = file.type === 'image/jpeg';
+                // const isPng = file.type === 'image/png';
+                // const isJPG = file.type === 'image/jpg';
+                const isLt2M = file.size / 1024 / 1024 < 2;
+
+                if (!isJPEG) {
+                    this.$message.error('上传头像图片只能是 JPG JPEG PNG格式!');
+                }
+                if (!isLt2M) {
+                    this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+                return isJPEG && isLt2M;
+            },
         },
         created(){
             this.handleTableData();
@@ -298,6 +317,7 @@
         },
         data(){
             return {
+                imageUrl:'',
                 loading:true,
                 tableHeight: 0,
                 isAdd:true,
@@ -312,17 +332,18 @@
                 TotalPage:0,
                 tableData: [],
                 rules:{
-                    storeyNo:[{ required: true, message:'必填项不可为空!', trigger: 'blur' }],
-                    tableNo:[{ required: true, message:'必填项不可为空!', trigger: 'blur' }],
+                    dishName:[{ required: true, message:'必填项不可为空!', trigger: 'blur' }],
+                    price:[{ required: true, message:'必填项不可为空!', trigger: 'blur' }],
                 },
                 form: {
-                    storeyNo: '',
-                    tableNo: '',
                     merchantId: '',
-                    tableName: '',
-                    capacity: '',
-                    position: '',
-                    minPrice: ''
+                    dishName: '',
+                    dishType: '',
+                    dishTag: '',
+                    ingredients: '',
+                    preview: '',
+                    price: '',
+                    intro: ''
                 }
             }
         }

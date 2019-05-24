@@ -10,7 +10,7 @@ axios.defaults.timeout = 5 * 10000;
 
 // 配置请求头
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
-axios.defaults.headers.post['Accept'] = 'application/json';
+// axios.defaults.headers.post['Accept'] = 'application/json';
 axios.defaults.headers.post['Authorization'] = sessionStorage.getItem('Authorization');
 
 // 配置scrf token
