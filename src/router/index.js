@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+// import HelloWorld from '@/components/HelloWorld'
 // const App = resolve => void (require(['../App'], resolve));
 
 Vue.use(Router)
@@ -12,7 +12,7 @@ const router = new Router({
         {
             name: "login",
             menu: false,
-            path: "/",
+            path: "/login",
             meta:{title:'登录'},
             component: resolve => void(require(['../components/HelloWorld'], resolve)),
         },
@@ -20,7 +20,7 @@ const router = new Router({
             name: "register",
             menu: false,
             path: "/register",
-            meta:{title:'登录'},
+            meta:{title:'注册'},
             component: resolve => void(require(['../components/HelloWorld'], resolve)),
         },
         {
@@ -38,7 +38,7 @@ const router = new Router({
                     menu: true,
                     path: "list",
                     meta: {title: '餐桌信息'},
-                    component: resolve => void (require(['../components/table/list'], resolve)),
+                    component: resolve => void (require(['../components/table/List'], resolve)),
                 }
             ]
         },
@@ -57,7 +57,7 @@ const router = new Router({
                     menu: true,
                     path: "pages",
                     meta: {title: '菜肴信息'},
-                    component: resolve => void (require(['../components/dish/list'], resolve)),
+                    component: resolve => void (require(['../components/dish/List'], resolve)),
                 }
             ]
         }
@@ -71,23 +71,17 @@ function canVisit(to) {
 
 //vue-router 前置拦截器
 router.beforeEach((to, from, next) => {
-    if(to.name == 'login' || to.name == 'register' ) {
-        Vue.component('App', HelloWorld);
+    if(to.name === 'login' || to.name === 'register' || to.path === '/login') {
+        next();
     } else {
-        Vue.component('App', require('../components/Main.vue'));
-    }
-
-    if (to.meta.title) {
-        document.title = '淘宝发单平台 - ' + to.meta.title;
-    }
-
-    if (to.path == '/login') {
-        if (sessionStorage.getItem('login') == '') {
-            window.location.href = sessionStorage.getItem('login');
+        if (! sessionStorage.getItem('Authorization') || sessionStorage.getItem('Authorization') == null) {
+            next({path:'/login'});
+            // next();
+        } else  {
+            Vue.component('App', require('../components/Main.vue'));
+            next();
         }
     }
-
-    next();
 });
 // 后置拦截器
 router.afterEach((to, from, next) => {
