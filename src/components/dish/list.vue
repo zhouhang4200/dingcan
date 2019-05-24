@@ -4,12 +4,12 @@
             <el-row :gutter="12">
                 <el-col :span="4">
                     <el-form-item label="类目">
-                        <el-input v-model="searchParams.dishType"></el-input>
+                        <el-input v-model="searchParams.dishType" id="dishType"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="4">
                     <el-form-item label="名称">
-                        <el-input v-model="searchParams.dishName"></el-input>
+                        <el-input v-model="searchParams.dishName" id="dishName"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="4">
@@ -95,17 +95,39 @@
         </el-pagination>
         <el-dialog :title="title" :visible.sync="dialogFormVisible">
             <el-form :model="form" ref="form" :rules="rules" label-width="80px">
-                <el-form-item label="打手昵称" prop="hatchet_man_name">
-                    <el-input v-model="form.hatchet_man_name" autocomplete="off"></el-input>
+                <el-form-item v-show="false" label="商户id" prop="dishName">
+                    <el-input v-model="form.merchantId" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="打手电话" prop="hatchet_man_phone">
-                    <el-input v-model.number="form.hatchet_man_phone" autocomplete="off"></el-input>
+                <el-form-item label="菜肴名称" prop="dishName">
+                    <el-input v-model="form.dishName" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="打手QQ" prop="hatchet_man_qq">
-                    <el-input v-model.number="form.hatchet_man_qq" autocomplete="off"></el-input>
+                <el-form-item label="所属类目" prop="dishType">
+                    <el-input v-model.number="form.dishType" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="备注" prop="content">
-                    <el-input type="textarea" v-model="form.content" autocomplete="off"></el-input>
+                <el-form-item label="口味标记" prop="dishTag">
+                    <el-input v-model.number="form.dishTag" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="菜肴配料" prop="ingredients">
+                    <el-input v-model.number="form.ingredients" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="预览图片" prop="preview">
+                    <!--<el-upload-->
+                            <!--class="avatar-uploader"-->
+                            <!--action="/v2/account/authentication-upload?name=preview"-->
+                            <!--:show-file-list="false"-->
+                            <!--accept="image/jpeg,image/jpg,image/png"-->
+                            <!--:on-success="handleAvatarSuccess"-->
+                            <!--:before-upload="beforeAvatarUpload">-->
+                        <!--<img v-if="imageUrl1" :src="imageUrl1" class="avatar">-->
+                        <!--<i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
+                    <!--</el-upload>-->
+                    <el-input v-model="form.preview" autocomplete="off" type="hidden"></el-input>
+                </el-form-item>
+                <el-form-item label="价格" prop="price">
+                    <el-input v-model.number="form.price" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="简介" prop="intro">
+                    <el-input v-model.number="form.intro" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button v-if="isAdd" type="primary" @click="submitFormAdd('form')">确认</el-button>
@@ -124,10 +146,10 @@
             dishAdd(){
                 this.isAdd=true;
                 this.isUpdate=false;
-                this.title='打手黑名单新增';
+                this.title='添加菜肴';
                 this.dialogFormVisible = true;
                 this.form={
-                    hatchet_man_name: '',
+                    merchantId: '',
                     hatchet_man_phone: '',
                     hatchet_man_qq: '',
                     content: ''
@@ -142,7 +164,7 @@
                 this.form=JSON.parse(JSON.stringify(row));
             },
             // 取消按钮
-            dishListCancel(formName) {
+            dishCancel(formName) {
                 this.dialogFormVisible = false;
                 this.$refs[formName].clearValidate();
             },
@@ -150,10 +172,10 @@
             submitFormAdd(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.$api.AccountBlackListAdd(this.form).then(res => {
+                        this.$api.dishAdd(this.form).then(res => {
                             this.$message({
                                 showClose: true,
-                                type: res.status == 1 ? 'success' : 'error',
+                                type: res.messageType == 'SUCCESS' ? 'success' : 'error',
                                 message: res.message
                             });
                             this.handleTableData();
@@ -173,10 +195,10 @@
             submitFormUpdate(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.$api.AccountBlackListUpdate(this.form).then(res => {
+                        this.$api.dishUpdate(this.form).then(res => {
                             this.$message({
                                 showClose: true,
-                                type: res.status == 1 ? 'success' : 'error',
+                                type: res.messageType == 'SUCCESS' ? 'success' : 'error',
                                 message: res.message
                             });
                             this.handleTableData();
@@ -194,17 +216,8 @@
             // 加载数据
             handleTableData(){
                 this.$api.dishList(this.searchParams).then(res => {
-                    if (res.data.pagerList) {
-                        this.tableData = res.data.pagerList;
-                        this.TotalPage = res.data.pagerList.total;
-                    } else {
-                        this.$alert('暂无相关数据，请点击新增按钮增加菜肴!', '提示', {
-                            confirmButtonText: '确定',
-                            callback: action => {
-                            }
-                        });
-                    }
-
+                    this.tableData = res.data.pagerList;
+                    this.TotalPage = res.data.total;
                     this.loading=false;
                 }).catch(err => {
                     this.$alert('获取数据失败, 请重试!', '提示', {
@@ -226,6 +239,21 @@
                 // });
             },
             handleSearch() {
+                var dishName = document.getElementById('dishName').value;
+                var dishType = document.getElementById('dishType').value;
+                if (dishName) {
+                    this.searchParams['dishName'] = dishName;
+                } else {
+                    delete this.searchParams.dishName;
+                }
+
+                if (dishType) {
+                    this.searchParams['dishType'] = dishType;
+                } else {
+                    delete this.searchParams.dishType;
+                }
+
+                console.log(this.searchParams);
                 this.handleTableData();
             },
             handleCurrentChange(page) {
@@ -239,10 +267,10 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$api.AccountBlackListDelete({id:id}).then(res => {
+                    this.$api.dishDelete({id:id}).then(res => {
                         this.$message({
                             showClose: true,
-                            type: res.status == 1 ? 'success' : 'error',
+                            type: res.messageType == 'SUCCESS' ? 'success' : 'error',
                             message: res.message
                         });
                         this.handleTableData();
@@ -279,8 +307,6 @@
                 dialogFormVisible:false,
                 AccountBlackListName:{},
                 searchParams:{
-                    dishType:'',
-                    dishName:'',
                     page:1
                 },
                 TotalPage:0,

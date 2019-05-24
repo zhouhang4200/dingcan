@@ -17,7 +17,19 @@ export default {
     },
     // 菜单
     dishList(params) {
-        return get('/api/dish/pages', params);
+        return post('/api/dish/pages', params);
+    },
+    // 菜单新增
+    dishAdd(params) {
+        return post('/api/dish/add', params);
+    },
+    // 菜单修改
+    dishUpdate(params) {
+        return post('/api/dish/update', params);
+    },
+    // 菜单删除
+    dishDelete(params) {
+        return post('/api/dish/delete', params);
     },
     // 游戏区服
     gameRegionServer(params) {
