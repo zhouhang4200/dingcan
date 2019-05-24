@@ -41,6 +41,25 @@ const router = new Router({
                     component: resolve => void (require(['../components/table/list'], resolve)),
                 }
             ]
+        },
+        {
+            name: "dish",
+            icon: "el-icon-goods",
+            path: '/dish/',
+            redirect: '/dish/pages',
+            component: App,
+            // canReuse: false,
+            meta: {title: '菜肴管理'},
+            menu: true,
+            children: [
+                {
+                    name: "list",
+                    menu: true,
+                    path: "pages",
+                    meta: {title: '菜肴信息'},
+                    component: resolve => void (require(['../components/dish/list'], resolve)),
+                }
+            ]
         }
     ]
 })

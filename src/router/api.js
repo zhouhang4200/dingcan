@@ -15,6 +15,10 @@ export default {
     tableList(params) {
         return post('/api/tables/list', params);
     },
+    // 菜单
+    dishList(params) {
+        return get('/api/dish/pages', params);
+    },
     // 游戏区服
     gameRegionServer(params) {
         return post('/v2/game-region-server', params);
