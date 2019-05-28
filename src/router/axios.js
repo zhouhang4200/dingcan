@@ -59,7 +59,7 @@ axios.interceptors.response.use(
             MessageBox.alert('您的登录信息失效需要重新登录', '登录失效', {
                 confirmButtonText: '确定',
                 callback: action => {
-                    window.location = '/login';
+                    window.location = '/#/login';
                 }
             });
         } else if (err.response.status === 423) {

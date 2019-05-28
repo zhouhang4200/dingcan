@@ -94,7 +94,7 @@
                 style="margin-top: 25px"
                 background
                 @current-change="handleCurrentChange"
-                :current-page.sync="searchParams.page"
+                :current-page.sync="searchParams.pageNum"
                 :page-size="10"
                 layout="total, prev, pager, next, jumper"
                 :total="TotalPage">
@@ -173,7 +173,7 @@
                 dialogFormVisible:false,
                 AccountBlackListName:{},
                 searchParams:{
-                    page:1
+                    pageNum:1,
                 },
                 TotalPage:0,
                 tableData: [],
@@ -303,23 +303,24 @@
             handleSearch() {
                 var dishName = document.getElementById('dishName').value;
                 var dishType = document.getElementById('dishType').value;
+
                 if (dishName) {
                     this.searchParams['dishName'] = dishName;
+                    delete this.searchParams.pageNum;
                 } else {
                     delete this.searchParams.dishName;
                 }
 
                 if (dishType) {
                     this.searchParams['dishType'] = dishType;
+                    delete this.searchParams.pageNum;
                 } else {
                     delete this.searchParams.dishType;
                 }
-
-                console.log(this.searchParams);
                 this.handleTableData();
             },
-            handleCurrentChange(page) {
-                this.searchParams.page = page;
+            handleCurrentChange(pageNum) {
+                this.searchParams.pageNum = pageNum;
                 this.handleTableData();
             },
             // 删除
