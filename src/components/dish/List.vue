@@ -40,22 +40,17 @@
                     width="200">
             </el-table-column>
             <el-table-column
+                    label="价格"
+                    prop="price"
+                    width="">
+            </el-table-column>
+            <el-table-column
                     label="所属类目"
                     prop="dishType"
                     width="200">
                 <template slot-scope="scope">
                     {{ dishTypeArr[scope.row.dishType] }}
                 </template>
-            </el-table-column>
-            <el-table-column
-                    label="口味标记"
-                    prop="dishTag"
-                    width="">
-            </el-table-column>
-            <el-table-column
-                    label="菜肴配料"
-                    prop="ingredients"
-                    width="">
             </el-table-column>
             <el-table-column
                     label="预览图片"
@@ -66,8 +61,13 @@
                 </template>
             </el-table-column>
             <el-table-column
-                    label="价格"
-                    prop="price"
+                    label="口味标记"
+                    prop="dishTag"
+                    width="">
+            </el-table-column>
+            <el-table-column
+                    label="菜肴配料"
+                    prop="ingredients"
                     width="">
             </el-table-column>
             <el-table-column
@@ -119,7 +119,13 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="口味标记" prop="dishTag">
-                    <el-input v-model.number="form.dishTag" autocomplete="off"></el-input>
+                    <!--<el-input v-model.number="form.dishTag" autocomplete="off"></el-input>-->
+                    <el-checkbox-group v-model="dishTagList" autocomplete="off" @change="dishTagChange">
+                        <el-checkbox label="不辣"></el-checkbox>
+                        <el-checkbox label="微辣"></el-checkbox>
+                        <el-checkbox label="中辣"></el-checkbox>
+                        <el-checkbox label="特辣"></el-checkbox>
+                    </el-checkbox-group>
                 </el-form-item>
                 <el-form-item label="菜肴配料" prop="ingredients">
                     <el-input v-model.number="form.ingredients" autocomplete="off"></el-input>
@@ -162,7 +168,7 @@
                 tableHeight: 0,
                 isAdd:true,
                 isUpdate:false,
-                title:'新增',
+                title:'添加',
                 url:'',
                 dialogFormVisible:false,
                 AccountBlackListName:{},
@@ -191,7 +197,8 @@
                     1 : '主菜',
                     2 : '主食',
                     3 : '饮料',
-                }
+                },
+                dishTagList: [],
             }
         },
         methods: {
@@ -199,19 +206,24 @@
             dishAdd(){
                 this.isAdd=true;
                 this.isUpdate=false;
-                this.title='添加菜肴';
+                this.title='添加';
                 this.dialogFormVisible = true;
                 this.form={
                     merchantId: '1',
                 };
+                this.dishTagList=['不辣'];
             },
             // 编辑按钮
             dishUpdate(row) {
+                this.dishTagList=[];
                 this.isAdd=false;
                 this.isUpdate=true;
-                this.title='打手黑名单修改';
+                this.title='修改';
                 this.dialogFormVisible = true;
                 this.form=JSON.parse(JSON.stringify(row));
+                if (row.dishTag) {
+                    this.dishTagList=row.dishTag.split(',');
+                }
             },
             // 取消按钮
             dishCancel(formName) {
@@ -266,7 +278,6 @@
             // 加载数据
             handleTableData(){
                 this.$api.dishList(this.searchParams).then(res => {
-                    console.log(123321);
                     this.tableData = res.data.pagerList;
                     this.TotalPage = res.data.total;
                     this.loading=false;
@@ -358,6 +369,12 @@
                     this.$message.error('上传头像图片大小不能超过 2MB!');
                 }
                 return isJPEG && isLt2M;
+            },
+            dishTagChange(value) {
+                let checkedCount = value.length;
+                let dishTag = value.join(',');
+                console.log(value.join(','));
+                this.form.dishTag = dishTag;
             },
         },
         created(){
