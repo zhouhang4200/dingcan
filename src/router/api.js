@@ -3,7 +3,7 @@ import { post, get } from './axios';
 // 获取订单数据
 export default {
     login(params) {
-        return post('/login', params);
+        return post('/api/auth/authorize', params);
     },
     logout(params) {
         return post('/logout', params);
@@ -18,6 +18,7 @@ export default {
     // 菜单
     dishList(params) {
         return post('/api/dish/pages', params);
+        // return post('/api/name', params);
     },
     // 菜单新增
     dishAdd(params) {

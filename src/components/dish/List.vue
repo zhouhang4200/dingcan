@@ -29,11 +29,11 @@
                 v-loading="loading"
                 border
                 style="width: 100%; margin-top: 1px">
-            <el-table-column
-                    prop="merchantId"
-                    label="商户ID"
-                    width="200">
-            </el-table-column>
+            <!--<el-table-column-->
+                    <!--prop="merchantId"-->
+                    <!--label="商户ID"-->
+                    <!--width="200">-->
+            <!--</el-table-column>-->
             <el-table-column
                     prop="dishName"
                     label="菜肴名称"
@@ -43,6 +43,9 @@
                     label="所属类目"
                     prop="dishType"
                     width="200">
+                <template slot-scope="scope">
+                    {{ dishTypeArr[scope.row.dishType] }}
+                </template>
             </el-table-column>
             <el-table-column
                     label="口味标记"
@@ -58,6 +61,9 @@
                     label="预览图片"
                     prop="preview"
                     width="">
+                <template slot-scope="scope">
+                    <img src="../../image/a.jpg" style="width: 100%;height: 100%;display: block;">
+                </template>
             </el-table-column>
             <el-table-column
                     label="价格"
@@ -89,7 +95,7 @@
                 background
                 @current-change="handleCurrentChange"
                 :current-page.sync="searchParams.page"
-                :page-size="15"
+                :page-size="10"
                 layout="total, prev, pager, next, jumper"
                 :total="TotalPage">
         </el-pagination>
@@ -102,7 +108,15 @@
                     <el-input v-model="form.dishName" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="所属类目" prop="dishType">
-                    <el-input v-model.number="form.dishType" autocomplete="off"></el-input>
+                    <el-select v-model="form.dishType" placeholder="请选择">
+                        <el-option
+                                v-for="value,key in dishTypeArr"
+                                :key="key"
+                                :label="value"
+                                :value="key">
+                            {{ value }}
+                        </el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="口味标记" prop="dishTag">
                     <el-input v-model.number="form.dishTag" autocomplete="off"></el-input>
@@ -141,6 +155,45 @@
 
 <script>
     export default {
+        data(){
+            return {
+                imageUrl:'',
+                loading:true,
+                tableHeight: 0,
+                isAdd:true,
+                isUpdate:false,
+                title:'新增',
+                url:'',
+                dialogFormVisible:false,
+                AccountBlackListName:{},
+                searchParams:{
+                    page:1
+                },
+                TotalPage:0,
+                tableData: [],
+                rules:{
+                    dishName:[{ required: true, message:'必填项不可为空!', trigger: 'blur' }],
+                    price:[{ required: true, message:'必填项不可为空!', trigger: 'blur' }],
+                    dishType:[{ required: true, message:'必填项不可为空!', trigger: 'blur' }],
+                    // preview:[{ required: true, message:'必填项不可为空!', trigger: 'blur' }],
+                },
+                form: {
+                    merchantId: '',
+                    dishName: '',
+                    dishType: '',
+                    dishTag: '',
+                    ingredients: '',
+                    preview: '123',
+                    price: '',
+                    intro: ''
+                },
+                dishTypeArr:{
+                    1 : '主菜',
+                    2 : '主食',
+                    3 : '饮料',
+                }
+            }
+        },
         methods: {
             //新增按钮
             dishAdd(){
@@ -213,6 +266,7 @@
             // 加载数据
             handleTableData(){
                 this.$api.dishList(this.searchParams).then(res => {
+                    console.log(123321);
                     this.tableData = res.data.pagerList;
                     this.TotalPage = res.data.total;
                     this.loading=false;
@@ -315,37 +369,6 @@
         destroyed() {
             window.removeEventListener('resize', this.handleTableHeight);
         },
-        data(){
-            return {
-                imageUrl:'',
-                loading:true,
-                tableHeight: 0,
-                isAdd:true,
-                isUpdate:false,
-                title:'新增',
-                url:'',
-                dialogFormVisible:false,
-                AccountBlackListName:{},
-                searchParams:{
-                    page:1
-                },
-                TotalPage:0,
-                tableData: [],
-                rules:{
-                    dishName:[{ required: true, message:'必填项不可为空!', trigger: 'blur' }],
-                    price:[{ required: true, message:'必填项不可为空!', trigger: 'blur' }],
-                },
-                form: {
-                    merchantId: '',
-                    dishName: '',
-                    dishType: '',
-                    dishTag: '',
-                    ingredients: '',
-                    preview: '',
-                    price: '',
-                    intro: ''
-                }
-            }
-        }
+
     }
 </script>

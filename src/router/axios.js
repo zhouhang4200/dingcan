@@ -11,7 +11,8 @@ axios.defaults.timeout = 5 * 10000;
 // 配置请求头
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 // axios.defaults.headers.post['Accept'] = 'application/json';
-axios.defaults.headers.post['Authorization'] = sessionStorage.getItem('Authorization');
+axios.defaults.headers.post['access_token'] = sessionStorage.getItem('access_token');
+// axios.defaults.headers.post['access_token'] = "49f12660-f8a5-493e-b583-087e371e0a3c";
 
 // 配置scrf token
 // let token = document.head.querySelector('meta[name="csrf-token"]');

@@ -16,7 +16,7 @@ module.exports = {
                 target: 'http://localhost/api/',//后端接口地址
                 changeOrigin: true,//是否允许跨越
                 pathRewrite: {
-                    '^/api': '',//重写,
+                    '^/api': '/api',//重写,
                 }
             }
         },

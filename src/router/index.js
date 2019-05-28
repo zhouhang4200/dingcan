@@ -14,33 +14,21 @@ const router = new Router({
             menu: false,
             path: "/login",
             meta:{title:'登录'},
-            component: resolve => void(require(['../components/HelloWorld'], resolve)),
+            component: resolve => void(require(['../components/auth/Login'], resolve)),
         },
         {
             name: "register",
             menu: false,
             path: "/register",
             meta:{title:'注册'},
-            component: resolve => void(require(['../components/HelloWorld'], resolve)),
+            component: resolve => void(require(['../components/auth/Login'], resolve)),
         },
         {
-            name: "table",
-            icon: "el-icon-goods",
-            path: '/table/',
-            redirect: '/table/list',
-            component: App,
-            // canReuse: false,
-            meta: {title: '餐桌管理'},
-            menu: true,
-            children: [
-                {
-                    name: "tableList",
-                    menu: true,
-                    path: "list",
-                    meta: {title: '餐桌信息'},
-                    component: resolve => void (require(['../components/table/List'], resolve)),
-                }
-            ]
+            name: "h5",
+            menu: false,
+            path: "/h5/order",
+            meta:{title:'h5订单'},
+            component: resolve => void(require(['../components/h5/Order'], resolve)),
         },
         {
             name: "dish",
@@ -60,6 +48,25 @@ const router = new Router({
                     component: resolve => void (require(['../components/dish/List'], resolve)),
                 }
             ]
+        },
+        {
+            name: "order",
+            icon: "el-icon-goods",
+            path: '/order/',
+            redirect: '/order/list',
+            component: App,
+            // canReuse: false,
+            meta: {title: '订单管理'},
+            menu: true,
+            children: [
+                {
+                    name: "orderList",
+                    menu: true,
+                    path: "list",
+                    meta: {title: '订单信息'},
+                    component: resolve => void (require(['../components/order/List'], resolve)),
+                }
+            ]
         }
     ]
 })
@@ -74,7 +81,7 @@ router.beforeEach((to, from, next) => {
     if(to.name === 'login' || to.name === 'register' || to.path === '/login') {
         next();
     } else {
-        if (! sessionStorage.getItem('Authorization') || sessionStorage.getItem('Authorization') == null) {
+        if (! sessionStorage.getItem('access_token') || sessionStorage.getItem('access_token') == null) {
             // next({path:'/login'});
             Vue.component('App', require('../components/Main.vue'));
             next();
