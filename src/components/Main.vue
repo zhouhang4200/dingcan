@@ -2,9 +2,9 @@
     <div class="container">
         <el-container>
             <el-aside :style="{'width': collapse ? '64px':'200px', 'background-color': '#515a6e'}">
-                <div class="logo" :style="{'width': collapse ? '64px':'200px'}">
-                    <i class="icon-tao" style="font-size:32px;color:#fff;padding-left: 16px"></i>
-                    <img src="/frontend/v2/images/logo.png" style="vertical-align: top" v-show="!collapse">
+                <div class="logo" style="height:31px;" :style="{'width': collapse ? '64px':'200px'}">
+                    <!--<i class="icon-tao" style="font-size:32px;color:#fff;padding-left: 16px"></i>-->
+                    <!--<img src="/frontend/v2/images/logo.png" style="vertical-align: top" v-show="!collapse">-->
                 </div>
                 <el-menu
                         :default-openeds="openMenu"
@@ -33,7 +33,9 @@
                         <el-menu-item v-for="submenu in item.children"
                                       :key="submenu.id"
                                       :index="item.path + submenu.path"
-                                      v-if="submenu.menu === true">
+                                      v-if="submenu.menu === true"
+                                      style="padding-left: 60px"
+                        >
                             {{ submenu.meta.title }}
                         </el-menu-item>
                     </el-submenu>
